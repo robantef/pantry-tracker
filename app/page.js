@@ -37,7 +37,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: '#333', // Dark background for modal
+  bgcolor: '#333',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -62,7 +62,7 @@ export default function Home() {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('name')
   const [searchTerm, setSearchTerm] = useState('')
-  const [expandedRow, setExpandedRow] = useState(null) // Track expanded row
+  const [expandedRow, setExpandedRow] = useState(null)
 
   const updateInventory = useCallback(async () => {
     setLoading(true)
@@ -302,84 +302,83 @@ export default function Home() {
         </Modal>
 
         {/* Inventory Table */}
-{loading ? (
-  <CircularProgress />
-) : error ? (
-  <Typography color="error">{error}</Typography>
-) : (
-  <TableContainer
-    component={Paper}
-    sx={{
-      maxWidth: '800px', // Set maximum width for the table container
-      borderRadius: '8px', // Rounded corners
-      overflow: 'hidden', // Ensure rounded corners apply to table content
-    }}
-  >
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>
-            <TableSortLabel
-              active={orderBy === 'name'}
-              direction={orderBy === 'name' ? order : 'asc'}
-              onClick={() => handleRequestSort('name')}
-            >
-              Item Name
-            </TableSortLabel>
-          </TableCell>
-          <TableCell>
-            <TableSortLabel
-              active={orderBy === 'quantity'}
-              direction={orderBy === 'quantity' ? order : 'asc'}
-              onClick={() => handleRequestSort('quantity')}
-            >
-              Quantity
-            </TableSortLabel>
-          </TableCell>
-          <TableCell>Description</TableCell>
-          <TableCell>Actions</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {sortedInventory.map((item, index) => (
-          <TableRow
-            key={item.name}
-            onClick={() => setExpandedRow(expandedRow === index ? null : index)}
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <Typography color="error">{error}</Typography>
+        ) : (
+          <TableContainer
+            component={Paper}
+            sx={{
+              maxWidth: '800px', 
+              borderRadius: '8px', 
+              overflow: 'hidden', 
+            }}
           >
-            <TableCell>{item.name}</TableCell>
-            <TableCell>{item.quantity}</TableCell>
-            <TableCell
-              sx={{
-                maxWidth: '200px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                cursor: 'pointer'
-              }}
-              onClick={() => setExpandedRow(expandedRow === index ? null : index)}
-            >
-              {expandedRow === index 
-                ? item.description
-                : item.description && item.description.length > 50
-                  ? item.description.slice(0, 50) + '...' 
-                  : item.description
-              }
-            </TableCell>
-            <TableCell>
-              <IconButton onClick={(e) => { e.stopPropagation(); handleOpenEdit(item); }}>
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={(e) => { e.stopPropagation(); removeItem(item.name); }}>
-                <DeleteIcon />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-)}
-
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <TableSortLabel
+                      active={orderBy === 'name'}
+                      direction={orderBy === 'name' ? order : 'asc'}
+                      onClick={() => handleRequestSort('name')}
+                    >
+                      Item Name
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell>
+                    <TableSortLabel
+                      active={orderBy === 'quantity'}
+                      direction={orderBy === 'quantity' ? order : 'asc'}
+                      onClick={() => handleRequestSort('quantity')}
+                    >
+                      Quantity
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell>Description</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sortedInventory.map((item, index) => (
+                  <TableRow
+                    key={item.name}
+                    onClick={() => setExpandedRow(expandedRow === index ? null : index)}
+                  >
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.quantity}</TableCell>
+                    <TableCell
+                      sx={{
+                        maxWidth: '200px',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => setExpandedRow(expandedRow === index ? null : index)}
+                    >
+                      {expandedRow === index 
+                        ? item.description
+                        : item.description && item.description.length > 50
+                          ? item.description.slice(0, 50) + '...' 
+                          : item.description
+                      }
+                    </TableCell>
+                    <TableCell>
+                      <IconButton onClick={(e) => { e.stopPropagation(); handleOpenEdit(item); }}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton onClick={(e) => { e.stopPropagation(); removeItem(item.name); }}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Box>
     </ThemeProvider>
   )
